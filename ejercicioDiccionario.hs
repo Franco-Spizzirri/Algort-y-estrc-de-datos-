@@ -1,13 +1,12 @@
+-- Crear un diccionario usando list. 
+
 module Diccionario (Dict, mkNewDict, insertDict, delDict, inDict) where
 
--- Definición del tipo Dict
 newtype Dict a = D [a] deriving Show 
 
--- Función para crear un diccionario vacío
 mkNewDict :: Dict a
-mkNewDict = D []  -- Retorna un diccionario vacío (lista vacía).
+mkNewDict = D [] 
 
--- Función para insertar un elemento en el diccionario
 insertDict :: (Ord a) => a -> Dict a -> Dict a
 insertDict x (D []) = D [x]  -- Si el diccionario está vacío, inserta el elemento.
 insertDict x (D (y:ys))
@@ -17,7 +16,6 @@ insertDict x (D (y:ys))
   where
    D ys' = insertDict x (D ys)  -- Recursión para insertar en el resto del diccionario.
 
--- Función para eliminar un elemento del diccionario
 delDict :: (Ord a) => a -> Dict a -> Dict a
 delDict x (D []) = D []  -- Si el diccionario está vacío, retornamos el diccionario vacío. 
                         -- otra forma : delDict x (D []) = error "Diccionario vacío"  -- Si el diccionario está vacío, error. 
@@ -27,9 +25,28 @@ delDict x (D (y:ys))
   where
    D ys' = delDict x (D ys)  -- Recursión para eliminar el elemento.
 
--- Función para saber si un elemento está en el diccionario
 inDict :: (Ord a) => a -> Dict a -> Bool
 inDict x (D []) = False  -- Si el diccionario está vacío, el elemento no está presente.
 inDict x (D (y:ys))
     | x == y    = True  -- Si encontramos el elemento, retornamos True.
     | otherwise = inDict x (D ys)  -- Si no, seguimos buscando.
+
+
+
+-- Diccionario usando Arbol binario: 
+
+-- ya definido previamente el arbol binario (ojo ahi, si no hay q hacerlo primero )
+
+newtype Dict a = Dic a (ArbolBin) deriving Show 
+
+mkNewDict :: (Ord a) => Dict a 
+mkNewDict = Dic (mkNewTree)
+
+insertDict :: (Ord a) => a -> Dict a -> Dict a 
+insertDict x (Dic t) = Dic (addTree x t)
+
+inDict :: (Ord a) => a -> Dict a -> Bool
+inDict x (Dic t) = inTree x t 
+
+delDict :: (Ord a) => a -> Dict a -> Dict a 
+delDict x (Dic t) = Dic (delTree x t)
