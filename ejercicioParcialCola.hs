@@ -8,6 +8,7 @@
 -- Escribir todas las funciones necesarias para la manipulacion de la estructura subyascente, es decir para manipular el arbol. 
 -- Recordar como extraer el elemento con clave mas pequeña de un arbol. 
 
+
 data Arbol a = Vacio | Nodo a (Arbol a) (Arbol a) deriving Show
 
 nuevoArbol:: (Ord a) => Arbol a 
@@ -45,6 +46,30 @@ addQpr x (Cp s) = Cp (agregar x s)
 nextQpr (Cp s) = minimo s 
 
 popQpr (Cp s) = Cp (eliminar s)
+
+
+-- Cola normal: 
+
+module Cola (Cola, EmptyCola, insertCola, delCola, IsColaEmpty, front)
+
+EmptyCola :: Cola a 
+insertCola :: a -> Cola a -> Cola a 
+delCola :: Cola a -> Cola a 
+IsColaEmpty :: Cola a -> Bool -- pregunto si la cola en general esta vacia
+front :: Cola a -> a 
+
+-- ahora lo implementamos usando listas []
+newtype Cola a = C [a]
+
+EmptyCola = C []
+
+insertCola x (C s) = C (s ++ [x])
+
+delCola (C[]) = C[]
+delCola (C(x:xs)) = C xs 
+
+front (C[]) = C[]
+front (C(x:xs)) = x 
 
 
 
