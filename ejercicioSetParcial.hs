@@ -14,35 +14,34 @@
 
 module Set (Set, emptySet, setEmpty, inSet, addSet, delSet, unionSet) where
 
--- Definición del tipo de dato Set como una lista de elementos de tipo a
 type Set a = [a]
 
--- emptySet: Crea un conjunto vacío
 emptySet :: Set a
 emptySet = []
 
--- setEmpty: Devuelve True si el conjunto está vacío, False si no lo está
 setEmpty :: Set a -> Bool
 setEmpty [] = True
 setEmpty _  = False
 
--- inSet: Verifica si un elemento está en el conjunto (utiliza la igualdad)
 inSet :: (Eq a) => a -> Set a -> Bool
 inSet x set = x `elem` set
 
--- addSet: Añade un elemento al conjunto si no está presente
 addSet :: (Eq a) => a -> Set a -> Set a
 addSet x set
   | x `elem` set = set  -- Si el elemento ya está, no lo añadimos
   | otherwise = x : set  -- Si no está, lo añadimos al principio de la lista
 
--- delSet: Elimina un elemento del conjunto si está presente
 delSet :: (Eq a) => a -> Set a -> Set a
-delSet x set = filter (/= x) set  -- Filtra todos los elementos distintos a x
+delSet _ [] = []
+delSet x (y:ys)
+  | x == y = delSet x ys 
+  | otherwise = y : delSet x ys 
 
--- unionSet: Realiza la unión de dos conjuntos (sin duplicados)
 unionSet :: (Eq a) => Set a -> Set a -> Set a
-unionSet set1 set2 = foldr addSet set2 set1  -- Añade todos los elementos de set1 a set2
+unionSet [] set2 = set2  -- Caso base: conjunto vacío, la unión es el segundo conjunto
+unionSet (x:xs) set2 
+  | x `elem` set2 = unionSet xs set2 --Si 'x' ya está en 'set2', lo omitimos
+  | otherwise = x : unionSet xs set2 -- Si no está, lo añadimos a 'set2'
 
 
 -- *Set> inSet 1 s1
