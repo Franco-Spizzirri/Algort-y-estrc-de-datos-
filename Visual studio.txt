@@ -1,0 +1,844 @@
+EJERCICIOS DE LA PRACTICA:  
+
+apply :: (a->b) -> a -> b -- toma una funcion cualquiera (2+), (2*) y lo aplica a un valor x que lo pongo por afuera
+apply f x = f x 
+
+identidad :: (Num a)=> a -> a
+identidad x = x
+
+first :: (a,b)->a --- aca declaro la funcion
+first (x,_) = x --- aca defino la funcion 
+
+derive :: (Double->Double)->Double->Double->Double
+derive f x h = (f(x+h) - f(x))/h 
+
+sign :: (Ord a, Num a)=> a -> a 
+sign x 
+  | x > 0 = 1 
+  | x < 0 = -1 
+  | otherwise = 0
+
+abs'::(Ord a, Num a)=>a->a 
+abs' x
+   | x > 0 = x
+   | x < 0 =(-x)
+   | otherwise = 0 
+
+pot :: Int->Double->Double 
+pot x y = y ^ x
+
+xor :: Bool->Bool->Bool
+xor a b = (a || b) && not (a && b)
+
+max' :: Int->Int->Int->Int
+max' a b c = 
+    if a>b && a>c 
+    then a
+    else if b>c 
+        then b 
+        else c 
+
+swap:: (a,b)->(b,a)
+swap (x,y) = (y,x)
+
+
+--2. Dar al menos dos ejemplos de funciones que tengan cada uno de los siguientes tipos:
+
+--a) (Int → Int) → Int            Int->Int->Int
+
+sumarX :: Int -> (Int -> Int) 
+sumarX x y = x + y
+
+-- b) Int → (Int → Int)     es lo mismo que hacer Int->Int->Int las -> me indican la cant de argumentos que necesito
+mult :: Int -> (Int->Int)    --en este caso mult le paso los argumentos asi no mas 
+mult x y = x * y
+
+add :: Int -> (Int->Int)
+add x y = x + y 
+
+-- c) (Int → Int) → (Int → Int)    
+
+
+
+
+-- d) Int → Bool                     el booleano me indica si es true o false, entonces puedo crear una funcion en la que me deje poner un entero y me de un valor verdadero o falso
+esPar :: Int -> Bool
+esPar x = (x `mod` 2) == 0         -- el x es el entero que yo voy a ingresar en la terminal y lo q esta luego del igual es el booleano que tiene q retornar. Uso x mod (funcion q viene predefinida dentro de haskell) y lo uso con dos comparandolo si es = a 0, como si fuera en c. 
+
+esPositivo :: Int -> Bool
+esPositivo x = x > 0
+
+esNegativo :: Int -> Bool
+esNegativo x = x < 0
+
+-- e) Bool → (Bool → Bool)
+funcionxor :: Bool->(Bool->Bool)
+funcionxor a b = (a || b) && not (a && b)
+
+funcionand :: Bool -> (Bool -> Bool)
+funcionand a b = a && b
+
+
+-- f) (Int,Char) → Bool     (Int, Char) es una Tupla ya que cada elemento puede ser distinto
+esParyVocal :: (Int,Char) -> Bool
+esParyVocal (x,y) = ((x `mod` 2) == 0) && (y `elem` "aeiouAEIOU") -- en la terminal hay q poner la vocal con ' '
+
+esNegativoyMayuscula :: (Int,Char) -> Bool
+esNegativoyMayuscula (x,y) = (x < 0) && (y `elem` ['A'..'Z']) -- los corchetes me sirven para indicar que tome un conjunto q va de  A a Z. 
+
+-- g) (Int,Int) → Int
+suma :: (Int, Int) -> Int 
+suma (x, y) = x + y
+
+multiplicacion :: (Int, Int) -> Int     -- en multiplicacion tengo q pasarle los argumentos () ya que es el formato en q me lo pide la funcion. Atento a esto
+multiplicacion (x, y) = x * y
+
+-- h) Int → (Int,Int)           en este caso es un entero q devuelve una tupla
+doblePar :: Int -> (Int,Int)  
+doblePar x = (x, 2*x)
+
+cuadradoNum :: Int -> (Int,Int)
+cuadradoNum x = (x, x*x)        -- aca va a ser en la tupla primero la x y luego el cuadrado
+
+-- i) a → Bool
+esPosit :: (Ord a, Num a) => a -> Bool
+esPosit x = x > 0
+noesCero :: (Num a, Eq a) => a -> Bool
+noesCero x = x /= 0
+
+-- j) a → a
+iden :: (Num a)=> a -> a
+iden x = x
+
+valorabs'::(Ord a, Num a)=> a -> a 
+valorabs' x
+   | x > 0 = x
+   | x < 0 =(-x)
+   | otherwise = 0
+
+
+--    3. Reescribir cada una de las siguientes definiciones sin usar let, where o if:
+   
+-- a) f x = let (y,z) = (x,x) in y  
+-- f x -> f :: a->b
+-- el let indica que a la tupla (x,x) le asigmanos los valores de la tupla (y,z). O sea y=x y z=x. 
+-- la expresion luego del in es la que se evaluara como el resultado de la funcion. Al ser simplemente Y e Y previamente asignado a x por el let, entonces la salida es simplemente x. 
+f1 :: a -> a 
+f1 x = x
+-- b) greater (x,y) = if x > y then True else False
+greater :: Ord a => a -> a -> Bool  -- es a ya que estamos tomando argumentos del mismo tipo (int, char, etc). Al estar comparando en orden ponemos Ord a, aclaramos q hacemos comparaciones en orden.
+greater x y = x > y
+
+-- c) f (x,y) = let z = x + y in g (z,y) where g (a,b) = a − b
+--f2 :: (Num c) => (c, c) -> c
+--f2 (x, y) = f tiene dos variables x e y. El let me define a z como la suma de x e y.
+--   let z = x + y in g (z, y) Aca definimos g q toma a z (x+y) y al valor Y del conjunto de f.
+--  where g (a, b) = a - b Aca declara a g como la resta de A y B
+--g seria = a hacer g(x+y,y). Que luego en la declaracion seria: (x+y) - y = x ya que el Y positivo y el negativo se cancelan. 
+--Entonces si al final la funcion f va a ser = x, quiere decir que F(x,y) = x. 
+ 
+f2 :: a -> b -> a -- esto asi ya q f toma dos argumentos (por ser una tupla) y me devuelve el primero (el x). 
+f2 x y = x
+
+
+-- 4. Suponiendo que f y g tienen los siguientes tipos
+
+-- f :: c → d
+-- g :: a → b → c
+-- y sea h definida como
+-- h x y = f (g x y)
+-- Determinar el tipo de h e indicar cuales de las siguientes definiciones de h son equivalentes a la
+-- dada:
+-- h = f · g   
+-- h x = f · (g x)  esta no. Toma un solo argumento x por lo que da como resultado b -> c y al aplicarlo a f seria: b -> d. Lo cual no es correcto con el tipo de h. 
+-- h x y = (f · g) x y    esta si ya que es lo mismo hacer f (g x y) si cambiamos el orden del producto
+-- ¿Cu´al es el tipo de la funcion ( · )?
+
+
+-- Cuando determinamos el tipo de h primero hay q verla con detenimiento. 
+-- h toma un X y un Y, que hace: una composicion donde primero aplica g (que toma dos argumentos a y b, por eso va primero si no no podria funcionar) devolviendo un c. 
+--Ya que g :: a → b → c. (G toma dos argumentos A y B que me devuelven un C) Luego, aplica f a ese c que termino quedando ya que f :: c → d (F toma 1 argumento C que me devuelve un D). 
+-- Entonces esto nos termina devolviendo un D. 
+-- Por lo tanto, el tipo de H deberia tener dos argumentos y q esto me devuelva un d. 
+
+-- f3 :: c -> d
+-- g :: a -> b -> c
+-- h :: a -> b -> d
+-- h x y = f (g x y)
+
+
+-- 5. Definir una funcion que determine si un año es bisiesto o no, de acuerdo a la siguiente
+-- definicion:
+-- año bisiesto 1. m. El que tiene un dıa mas que el año comun, añadido al mes de febrero. Se
+-- repite cada cuatro años, a excepcion del ultimo de cada siglo cuyo numero de centenas no
+-- sea multiplo de cuatro. (Diccionario de la Real Academia Española, 22◦
+-- ed.)
+-- ¿Cual es el tipo de la funcion definida?
+
+-- Si el año es divisible entre 4 y no es divisible entre 100 o es divisible entre 400, entonces el año es bisiesto.
+
+esBisiesto :: Int -> Bool
+esBisiesto año = 
+   if año `mod` 400 == 0         then True 
+   else if año `mod` 100 == 0    then False
+   else if año `mod` 4 == 0      then True
+   else False 
+
+
+-- 6. Sin usar funciones predefinidas, defina recursivamente las siguientes funciones y determine su
+-- tipo m´as general:
+
+-- a) suma, que suma todos los elementos de una lista de n´umeros
+
+funcionSuma :: Num a =>[a] -> a  -- cuando me pide lista de numeros puede ser de cualquier tipo(int, float, etc) entonces al poner q es de tipo num estamos diciendo q puede ser de cualquiera de esos tipos. 
+funcionSuma [] = 0
+funcionSuma (x:xs) = x + funcionSuma xs  --la recursividad aca lo aplicamos a el resto q serian los xs
+
+-- b) alguno, que devuelve True si alg´un elemento de una lista de valores booleanos es True, y
+-- False en caso contrario
+
+alguno :: [Bool] -> Bool
+alguno [] = False -- si la lista esta vacia es false
+alguno (x:xs) = x || alguno xs -- si el primer elemento o alguno de los siguientes es true, duevuelve true. Si todos son false o la lista esta vacia es false. 
+
+
+-- c) todos, que devuelve True si todos los elementos de una lista de valores booleanos son True,
+-- y False en caso contrario
+
+todos :: [Bool] -> Bool
+todos [] = True -- ya que si llega al final y ve lista vacia va a tener un False, por ende va a poner todos en false. 
+todos (x:xs) = x && todos xs 
+
+-- d) codes, que dada una lista de caracteres, devuelve la lista de sus ordinales
+
+codes :: [Char] -> [Int]
+codes [] = []  -- Caso base: Si la lista está vacía, devolvemos una lista vacía
+codes (x:xs) = fromEnum x : codes xs  -- Convertimos el primer carácter en su ordinal y aplicamos recursión al resto de la lista
+                                       --La función toma el primer elemento de la lista (x) y lo convierte a su valor ordinal usando fromEnum. Este valor ordinal es un número entero que corresponde al valor de la tabla de caracteres (ASCII o Unicode, dependiendo del sistema).
+
+-- e) restos, que calcula la lista de los restos de la divisi´on de los elementos de una lista de
+-- n´umeros dada por otro n´umero dado
+
+restos ::  [Int] -> Int -> [Int]
+restos [] _ = []  -- Caso base: si la lista está vacía, devolvemos una lista vacía
+restos (x:xs) n = (x `mod` n) : restos xs n  -- Calculamos el resto de x dividido por n y aplicamos recursión al resto de la lista
+
+--El operador mod solo está disponible para tipos que sean instancias de Integral, como Int y Integer, por lo que necesitamos especificar que el tipo a debe ser de la clase Integral en la firma de tipo.
+
+
+-- f) cuadrados, que dada una lista de n´umeros, devuelva la lista de sus cuadrados
+
+cuadrados :: Num a => [a] -> [a]
+cuadrados [] = []
+cuadrados (x:xs) = x^2 : cuadrados xs -- los : lo usas para concatenar
+
+-- g) longitudes, que dada una lista de listas, devuelve la lista de sus longitudes
+
+longitud1 :: [a] -> Int
+longitud1 [] = 0                  -- calcula la longitud de una lista
+longitud1 (x:xs) = 1 + longitud1 xs 
+
+--te dice la cantidad de elementos que hay en cada lista
+
+longitudes :: [[a]] -> [Int]
+longitudes [] = []
+longitudes (x:xs) = longitud1 x : longitudes xs      -- llamo primero a la funcion longitud1 para analizar la longitud de la lista y longitudes analiza la longitud de las listas.
+
+-- h) orden, que dada una lista de pares de n´umeros, devuelve la lista de aquellos pares en los
+-- que la primera componente es menor que el triple de la segunda
+
+orden :: (Num a, Ord a) => [(a,a)] -> [(a,a)]
+orden [] = []
+orden ((x,y):xs) = if x < y * 3 then (x,y) : orden xs -- si el primero es menor que el segundo x3 entonces va a meter ese par ordenado
+                  else orden xs -- de no ser asi, no lo pone y llama a recursion para probar con el resto de pares ordenados. 
+
+-- i) pares, que dada una lista de enteros, devuelve la lista de los elementos pares
+
+pares :: [Int] -> [Int]
+pares [] = []
+pares (x:xs) = if x `mod` 2 == 0 then ( x : pares xs) 
+               else pares xs 
+
+
+-- j) letras, que dada una lista de caracteres, devuelve la lista de aquellos que son letras
+-- (min´usculas o may´usculas)
+
+letras :: [Char] -> [Char]
+letras [] = []
+letras (x:xs)  
+   | (x >= 'a' && x<= 'z') || (x >= 'A' && x<= 'Z' ) = x : letras xs 
+   |otherwise = letras xs 
+
+-- k) masDe, que dada una lista de listas xss y un n´umero n, devuelve la lista de aquellas listas
+-- de xss con longitud mayor que n
+
+
+masDe :: [[a]] -> Int -> [[a]]
+masDe [] _ = []
+masDe (x:xs) n = if longitud1 x > n 
+                  then x : masDe xs n
+                  else masDe  xs n 
+
+
+-- 7. El producto escalar de dos listas de enteros de igual longitud es la suma de los productos de
+-- los elementos sucesivos (misma posici´on) de ambas listas. Usando listas por comprensi´on defina
+-- una funci´on scalarproduct que devuelva el producto escalar de dos listas.
+-- Sugerencia: Usar las funciones zip y sum.
+-- • zip [1,2,3] [4,5,6] = [(1,4),(2,5),(3,6)]
+-- • sum [1,2,3] = 6
+
+
+-- El producto escalar de dos listas de enteros de igual longitud es la suma de los productos de los elementos correspondientes de ambas listas. Es decir:
+-- Si tenemos dos listas a = [a1, a2, a3] y b = [b1, b2, b3], el producto escalar es
+-- a1 × b1 + a2 × b2 + a3 × b3
+-- Por ejemplo, si a = [1, 2, 3] y b = [4, 5, 6], el producto escalar sería:
+-- (1×4) + (2×5) + (3×6) = 4 + 10 + 18 = 32
+
+
+-- En Haskell, una lista por comprensión es una forma concisa y poderosa de construir listas. La sintaxis general es:
+-- [expresión | condición]
+-- Por ejemplo:
+-- [ x * x | x <- [1, 2, 3]]  => Resultado: [1, 4, 9]
+
+scalarproduct :: [Int] -> [Int] -> Int
+scalarproduct a b = sum [x * y | (x, y) <- zip a b]
+
+-- el zip me combina las dos listas a y b en dos listas de tuplas. 
+--en la lista por comprension recorre la tupla creada por zip y calcula x*y y el resultado es una lista de productos de cada par de elementos. 
+--sum suma todos los elementos de la lista generada por la lista por comprension, siendo los productos de los elementos correspondientes. 
+
+
+-- 8. Definir las siguientes funciones usando listas por comprensi´on:
+
+-- a) divisors, que dado un entero positivo x devuelve la lista de los divisores de x (y la lista vac´ıa
+-- si el entero no es positivo).
+
+divisors :: Int -> [Int]
+divisors x = if x > 0
+               then [y | y <- [1..x], x `mod` y == 0]
+            else []
+
+ -- otra manera
+-- divisors x
+-- | x > 0 = [y | y <- [1..x], x mod y ==0]
+-- | otherwise = []
+
+-- b) matches, que dados un entero x y una lista de enteros descarta de la lista los elementos distintos
+-- a x.
+
+matches :: Int -> [Int] -> [Int]
+matches x lista = [y | y <- lista, y == x]
+
+-- c) unique, que dada una lista xs de enteros, devuelve la lista con los elementos no repetidos de
+-- xs.
+cont:: Int -> [Int] -> Int
+cont _ [] = 0
+cont x (y:ys)
+ | x==y    = 1 + cont x ys -- para ver cuantas veces aparece un numero en una lista
+ | otherwise = cont x ys
+ --funcionamiento de cont: si x == y, suma 1, y luego se fija si aparece mas veces en el resto de elementos
+ -- si x /= y, se fija cuantas veces aparece x en el resto de la lista
+
+unique:: [Int] -> [Int]
+unique l = [x | x <- l, cont x l == 1] -- el filtro es que solo aparezcan en la nueva lista los numeros que aparecen solo una vez
+
+
+-- d) cuadrupla, que dados cuatro enteros a, b, c y d tales que 0 < a, b, c, d, ≤ 100, devuelve las
+-- cuadruplas (a, b, c, d) que cumplen a^2 + b^2 = c^2 + d^2, es decir una tupla de 4 enteros. 
+
+cuadrupla :: Int -> Int -> Int -> Int -> [(Int, Int, Int, Int)]
+cuadrupla aMax bMax cMax dMax =
+  [ (a, b, c, d) | a <- [1..aMax], b <- [1..bMax], c <- [1..cMax], d <- [1..dMax], a^2 + b^2 == c^2 + d^2 ]
+
+--[1..aMax]: Genera una lista de enteros desde 1 hasta aMax para a, lo mismo para b, c y d.
+--a^2 + b^2 == c^2 + d^2: Esta es la condición que debe cumplirse para incluir la tupla (a, b, c, d) en el resultado.
+
+-- 9. Definir el tipo de datos Direction cuyos valores describan los puntos cardinales. Definir la
+-- funci´on move que dado un punto en el plano (representado como un par de enteros) y una direcci´on
+-- devuelva el punto que se obtiene el desplazarse una unidad en dicha direcci´on.
+
+data Direccion = Norte | Sur | Este | Oeste deriving Show
+
+move :: (Int, Int) -> Direccion -> (Int,Int)
+move (x,y) Norte = (x,y +1) -- se mueve 1 hacia arriba en la y
+move (x,y) Sur = (x,y -1)  -- hacia abajo 1 en la 1 
+move (x,y) Este = (x +1,y) -- hacia la derecha 1 en x
+move (x,y) Oeste = (x -1,y) -- hacia la izquierda 1 en x 
+
+data Persona = Pers String Int deriving Show
+
+-- 10.
+-- a) Definir las operaciones de suma y producto m´odulo 2 para el tipo
+-- data DigBin = Cero |Uno
+-- b) Definir las operaciones de suma binaria, producto por dos, cociente y resto de la divisi´on por
+-- dos para el tipo:
+-- type NumBin = [Digbin]
+-- donde convenimos que el primer elemento de las lista de d´ıgitos es el d´ıgito menos significativo
+-- del n´umero representado.
+-- c) Redefinir las funciones del item anterior, observando una convenci´on opuesta.
+-- d) Definir funciones que multipliquen nA˜ omeros binarios de acuerdo a las dos convenciones.
+
+-- Definimos el tipo DigBin para los dígitos binarios
+data DigBin = Cero | Uno deriving (Show, Eq)
+
+-- Al agregar deriving Eq, Haskell genera automáticamente una instancia de Eq para el tipo DigBin, lo que significa que Cero == Cero devuelve True, Cero == Uno devuelve False, y lo mismo para Uno.
+-- Esto hace que sea posible usar el operador == en el código sin necesidad de definir explícitamente la función eq para el tipo DigBin.
+
+
+-- Suma módulo 2 (XOR)
+sumatoriabinario :: DigBin -> DigBin -> DigBin
+sumatoriabinario Cero Cero = Cero
+sumatoriabinario Cero Uno  = Uno
+sumatoriabinario Uno  Cero = Uno
+sumatoriabinario Uno  Uno  = Cero
+
+-- Producto módulo 2 (AND)
+productobinario :: DigBin -> DigBin -> DigBin
+productobinario Cero _ = Cero
+productobinario _ Cero = Cero
+productobinario Uno  Uno = Uno
+
+-- Tipo NumBin para representar números binarios como listas de DigBin
+type NumBin = [DigBin]
+
+-- Suma binaria 
+sumaBinaria :: NumBin -> NumBin -> NumBin
+sumaBinaria xs ys = sumaBinaria' xs ys Cero  -- Comienza con el acarreo como Cero
+
+-- Función auxiliar para la suma binaria con acarreo
+sumaBinaria' :: NumBin -> NumBin -> DigBin -> NumBin
+sumaBinaria' [] [] Cero = []
+sumaBinaria' [] [] Uno  = [Uno]
+sumaBinaria' (x:xs) [] acarreo = sumaBinaria' xs [Cero] acarreo  -- Si ys está vacío, consideramos un 0. Esta línea maneja el caso cuando una de las listas es más corta que la otra
+sumaBinaria' [] (y:ys) acarreo = sumaBinaria' [Cero] ys acarreo  -- Si xs está vacío, consideramos un 0
+sumaBinaria' (x:xs) (y:ys) acarreo =
+    let sumaBit = sumatoriabinario (sumatoriabinario x y) acarreo
+        nuevoAcarreo = if sumaBit == Uno then Uno else Cero
+    in sumaBit : sumaBinaria' xs ys nuevoAcarreo  -- Recursivamente sumar el siguiente bit
+
+--Primer argumento (NumBin): Representa el primer número binario que estamos sumando. Es una lista de dígitos binarios.
+--Segundo argumento (NumBin): Representa el segundo número binario que estamos sumando. También es una lista de dígitos binarios.
+--Tercer argumento (DigBin): Representa el acarreo de la suma. Al inicio, cuando no hay acarreo (es la primera suma), se pasa como Cero. Luego, a medida que vamos sumando los bits, el acarreo puede cambiar a Uno si la suma de dos bits da 2 (es decir, 1 + 1 = 2, lo que produce un acarreo de 1).
+
+-- Producto por dos (equivalente a desplazamiento a la izquierda)
+productoPorDos :: NumBin -> NumBin
+productoPorDos xs = xs ++ [Cero]
+
+-- Cociente de la división por dos (eliminar el bit menos significativo)
+cocientePorDos :: NumBin -> NumBin
+cocientePorDos [] = []
+cocientePorDos [x] = []  -- Si solo hay un dígito, el cociente es vacío
+cocientePorDos (x:xs) = x : cocientePorDos xs
+
+-- Resto de la división por dos (el último bit)
+restoPorDos :: NumBin -> DigBin
+restoPorDos [] = Cero
+restoPorDos [x] = x
+restoPorDos (_:xs) = restoPorDos xs
+
+-- Suma binaria (convención opuesta, bit más significativo al principio)
+sumaBinariaOpuesta :: NumBin -> NumBin -> NumBin
+sumaBinariaOpuesta xs ys = reverse (sumaBinaria' (reverse xs) (reverse ys) Cero)
+
+-- Producto por dos (convención opuesta)
+productoPorDosOpuesta :: NumBin -> NumBin
+productoPorDosOpuesta xs = [Cero] ++ xs  -- Desplazar agregando cero al principio
+
+-- Cociente de la división por dos (convención opuesta)
+cocientePorDosOpuesta :: NumBin -> NumBin
+cocientePorDosOpuesta [] = []
+cocientePorDosOpuesta [x] = []  -- Si solo hay un dígito, el cociente es vacío
+cocientePorDosOpuesta (x:xs) = cocientePorDosOpuesta xs
+
+-- Resto de la división por dos (convención opuesta)
+restoPorDosOpuesta :: NumBin -> DigBin
+restoPorDosOpuesta [] = Cero
+restoPorDosOpuesta [x] = x
+restoPorDosOpuesta (_:xs) = restoPorDosOpuesta xs
+
+
+-- Multiplicación binaria (primera convención)
+multiplicacionBinaria :: NumBin -> NumBin -> NumBin
+multiplicacionBinaria xs ys = foldr sumaBinaria [] (map (\y -> if y == Uno then productoPorDos xs else []) ys)
+
+-- Multiplicación binaria (convención opuesta)
+multiplicacionBinariaOpuesta :: NumBin -> NumBin -> NumBin
+multiplicacionBinariaOpuesta xs ys = foldr sumaBinariaOpuesta [] (map (\y -> if y == Uno then productoPorDosOpuesta xs else []) ys)
+
+
+
+-- 11. Dada las siguientes representaciones de los ´arboles generales y de los ´arboles binarios
+
+-- data GenTree a = EmptyG | NodeG a [GenTree a]
+-- data BinTree a = EmptyB | NodeB (BinTree a) a (BinTree a)
+-- definir una funci´on que dado un ´arbol general, lo transforme en un ´arbol binario de la siguiente
+-- manera:
+-- Cada nodo NodeG en orden en el ´arbol general corresponde a un nodo NodeB en el ´arbol binario;
+-- el hijo de la izquierda de NodeB es el nodo correspondiente al primer hijo de NodeG, y el hijo
+-- derecho de NodeB es el nodo correspondiente al siguiente hermano de NodeG, es decir, el pr´oximo
+-- nodo en orden entre los hijos de los padres de NodeG.
+
+-- El primer arbol izq del binario es el primer hijo del general. El derecho seria el segundo hijo del general. 
+
+data GenTree a = EmptyG | NodeG a [GenTree a] deriving Show -- definimos el arbol vacio | nodo raiz [lista de subarboles izquierdo y derecho]
+data BinTree a = EmptyB | NodeB (BinTree a) a (BinTree a) deriving Show -- definimos el arbol vacio | nodo con (nodo izquierdo) la raiz (nodo derecho)
+
+-- Función para transformar un árbol general en un árbol binario
+genToBin :: GenTree a -> BinTree a -- recibe un arbol general y devuelve un binario
+genToBin EmptyG = EmptyB -- un arbol general vacio es igual a un binario vacio
+genToBin (NodeG x []) = NodeB EmptyB x EmptyB  -- Si no tiene hijos, es un nodo sin hijos en el árbol binario
+genToBin (NodeG x (h:hs)) = NodeB (genToBin h) x (transformaHermanos hs x) -- transforma en binario primer elemento (hijo izq) y el hijo derecho se forma llamando recursivamente a transformar hermanos
+  where
+    -- Función auxiliar para transformar los hermanos del nodo
+    transformaHermanos :: [GenTree a] -> a -> BinTree a
+    transformaHermanos [] _ = EmptyB  -- No hay más hermanos
+    transformaHermanos (h:hs) x = NodeB (genToBin h) x (transformaHermanos hs x) -- transformar hermanos a su vez transforma el resto de la lista (hermanos derechos) en binario
+
+
+
+
+
+EJERCICIOS DE PARCIALES:
+
+--1 Un numero perfecto es aquel que es igual a la suma de sus divisores menores que el. (Ej 6: 3,2,1). 
+--Utilizando listas por comprension escribir la funcion "perfectosn" que de como resultado la lista de numeros perfectos comprendidos en el intervalo [1,n]. 
+
+sumaDivisores :: Int -> Int 
+sumaDivisores n = sum [x | x <- [1..n-1], n `mod` x == 0]
+
+perfectosn :: Int -> [Int]
+perfectosn p = [x | x <- [1..p], sumaDivisores x == x]
+--              aca es para cada x en el intervalo 1..p verifica si la suma de sus divisores propios es igual a x
+
+--2 Escribir una funcion que recibe como argumento dos listas ordenadas, y que devuelve una lista ordenada fusion de las listas de argumentos (NO se debe usar ningun metodo de clasificacion)
+--juntar :: (Ord a) => [a] -> [a] -> [a] 
+
+juntar :: (Ord a) => [a] -> [a] -> [a] 
+juntar xs [] = xs -- cuando la segunda es vacia devuelvo la primera lista. 
+juntar [] ys = ys -- cuando la primera es vacia devuelvo la segunda lista.
+juntar (x:xs) (y:ys)
+    | x <= y = x : juntar xs (y:ys) --si x es menor o igual q y, colocalo primero
+    | otherwise = y : juntar ys (x:xs) -- si y es menor que x, colalo primero
+
+--3 Escriba una funcion Qsort :: (Ord a) => [a] -> [a]. Sin usar listas por comprension. 
+-- Escriba una funcion particion que reciba como argumento un valor de referencia, o pivot, y una lista de valores del mismo tipo que el pivot. Esta funcion da como resultado
+-- una tupla de 2 listas de modo que en la primer lista estan todos los valores de la lista original que son menores o iguales que el pivot y la segunda lista todos los mayores
+-- que el pivot. 
+-- particion :: (Ord a) => a -> [a] -> ([a],[a])
+
+particion :: (Ord a) => a -> [a] -> ([a],[a])
+particion p [] = ([],[]) -- si vos estas poniendo un valor pivot pero la lista esta vacia, lo q devuelve esto es una tupla de 2 listas. Entonces si la lista esta vacia, no importa el valor del pivot te va a devolver una tupla de dos listas vacias. 
+particion p (x:xs) 
+    | x <= p = (x : menores, mayores) -- si x es menor al pivot los : ponen a x en la lista de los menores
+    |otherwise = (menores,x : mayores) -- si es mayor pasa a los menores pone la , y usa el : para ponerlo en la lista de los mayores
+    where 
+        (menores,mayores) = particion p xs
+
+qsort :: (Ord a) => [a] -> [a]
+qsort [] = []
+qsort (x:xs) = qsort menores ++ [x] ++ qsort mayores 
+    where 
+        (menores, mayores) = particion x xs 
+
+
+--4 Escribir una version personal de la funcion zip, llamada miZip
+miZip :: [a] -> [b] -> [(a,b)]
+miZip _ [] = [] -- cuando la segunda lista es vacia, es vacia la tupla. 
+miZip [] _ = [] 
+miZip (x:xs) (y:ys) = (x,y) : miZip xs ys -- tomo los primeros elementos de las listas (el x y el y) y los emparejo, despues llamo recursivamente a mizip para q haga lo mismo con el resto de los elementos de ambas listas
+
+--5 Usando miZip y listas por comprension escriba una funcion que realice el producto escalar de dos listas. Suma de los productos uno a uno, componente a componente de la lista.
+-- Si una lista tuviera mas elementos que la otra, al agotarse uno de los operandos se detiene la suma. 
+-- a1*b1 + a2*b2 + ai*bi
+productoEsc :: [Int] -> [Int] -> Int
+productoEsc [] _ = 0  -- Si una lista está vacía, el producto escalar es 0
+productoEsc _ [] = 0  -- Lo mismo si la otra lista está vacía
+productoEsc xs ys = sum [x*y | (x,y) <- miZip xs ys] --combina las dos listas xs y ys en una lista de pares (x, y) donde x es un elemento de la lista xs y y es el elemento correspondiente en la lista ys. 
+-- para cada par (x, y) generado por miZip xs ys, se calcula el producto x * y. Sum devuelve la suma de esos productos. 
+
+--5 Usando solo la funcion miZip escriba la funcion indexado. Dada una lista produce una lista de pares donde cada elemento de la lista tiene su posicion dentro de la misma. 
+--La indezacion comienza en 1. 
+--Ej: indexado ["Juan", "Pedro", "Luis"] => [("Juan",1),("Pedro",2),("Luis", 3)] 
+
+indexado :: [a] -> [(a,Int)]
+indexado xs = miZip xs [1..]  -- Usa miZip para combinar la lista xs con la lista de índices empezando en 1
+
+--6 Escribir una funcion que inserta elementos en una lista de manera de mantenerla ordenada de menor a mayor. De esta forma cada operacion Head sobre la lista devuelve el
+--elemento mas chico almacenado en ella 
+
+inserta2 :: (Ord a) => a -> [a] -> [a]
+inserta2 x [] = [x]
+inserta2 x (y:ys) 
+    | x <= y = x : (y:ys) -- Si el nuevo elemento es menor o igual que y, lo insertamos antes de y. 
+    |otherwise = y : inserta2 x ys  -- Si el nuevo elemento es mayor que y, seguimos buscando en la cola. Hasta encontrar un x y colocarlo adelante de esa y. 
+
+--EJemplo: 
+
+--insertar 4 [1, 3, 5, 7]
+-- Comienza con x = 4, y = 1:
+-- 4 > 1, por lo que seguimos a la cola con [3, 5, 7].
+-- Comienza con x = 4, y = 3:
+-- 4 > 3, por lo que seguimos a la cola con [5, 7].
+-- Comienza con x = 4, y = 5:
+-- 4 <= 5, por lo que insertamos 4 antes de 5.
+-- Resultado final: [1, 3, 4, 5, 7]
+
+-- 7 Considerando la siguiente funcion: 
+-- split :: (Ord a) => a -> [a] -> ([a], [a])
+-- split x l = ([y |y <-l , y <=x], [y | y <- l , y > x])
+-- El primer corchet me dice que toma los y de la lista l y lo q esta luego de la coma es cuales tipos de y toma (q en este caso son los menosres o iguales a x)
+-- en el segundo toma los y de la lista l que son mayores a x. 
+-- Defina una version de esta funcion que trabaje en exactamente una sola pasada a la lista "l". 
+split :: (Ord a) => a -> [a] -> ([a], [a])
+split _ [] = ([], [])
+split x (y:ys)
+    | y <= x = (y : izq , der)  -- Si y <= x, lo agregamos a la sublista izquierda. Va asi xq arriba te pide los Y de la lista que son menores a x, no tiene sentido poner x xq no es un elemento propio de la lista, Y si. 
+    |otherwise = (izq , y : der) -- Si y > x, lo agregamos a la sublista derecha. Agarramos los y que son mayores a x
+    where
+        (izq , der) = split x ys -- Recursión: aplicamos split al resto de la lista
+    
+-- El resultado de la recursión se obtiene directamente a través de la expresión where, que evalúa split x ys para obtener las dos sublistas (left y right) de la cola ys de la lista.
+-- El uso de where permite definir las sublistas left y right de forma más clara y sin necesidad de let.
+
+-- 8 Defina un tipo de dato Arbol Binario de busqueda (ArbolBin)
+-- Escriba el metodo addTree e inOrderTree
+--addTree :: (Ord a) => a -> ArbolBin a -> ArbolBin a 
+-- inOrderTree :: (Ord a) => ArbolBin a -> [a]  (insertas el arbol y te devuelve la lista de los nodos en inorder). 
+-- El listado en orden de arbol se define de la siguiente manera: primero se lista el arbol izq, luego la raiz y finalmente se lista en orden el arbol derecho. 
+
+
+data ArbolBin a = EmptyBT | NodoBt a (ArbolBin a) (ArbolBin a) deriving Show
+
+--mkNewTree :: (Ord a) => ArbolBin a
+--inTree :: (Ord a) => a -> ArbolBin a -> Bool
+addTree :: (Ord a) => a -> ArbolBin a -> ArbolBin a 
+--delTree :: (Ord a) => a -> ArbolBin a -> ArbolBin a 
+inOrderTree :: (Ord a) => ArbolBin a -> [a]
+
+addTree x EmptyBT = NodoBt x EmptyBT EmptyBT -- aca cuando es vacio aclaro que es de tipo NodoBt y q tiene una raiz x con dos nodos vacios
+addTree x (NodoBt y lf rt)
+    | x == y = NodoBt y lf rt -- y es el valor del nodo actual. 
+    | x < y = NodoBt y (addTree x lf) rt -- La recursión se encarga de seguir buscando la posición adecuada para insertar x en el subárbol izquierdo de y.
+    | x > y = NodoBt y lf (addTree x rt)
+
+inOrderTree EmptyBT = [] -- si el arbol esta vacio devuelvo lista vacia. 
+inOrderTree (NodoBt x lf rt) = inOrderTree lf ++ [x] ++ inOrderTree rt -- Es por eso que en la función inOrderTree, cada vez que encontramos un nodo, 
+
+preOrderTree :: (Ord a) => ArbolBin a -> [a]
+preOrderTree EmptyBT = []
+preOrderTree (NodoBt x lf rt) = [x] ++ preOrderTree lf ++ preOrderTree rt
+
+postOrderTree :: (Ord a) => ArbolBin a -> [a]
+postOrderTree EmptyBT = []
+postOrderTree (NodoBt x lf rt) = postOrderTree lf ++ postOrderTree rt ++ [x]
+
+--llamamos de forma recursiva a la función sobre su subárbol izquierdo, luego procesamos el nodo actual (lo agregamos a la lista), y después llamamos recursivamente a la función sobre su subárbol derecho.
+--Main> addTree 4  EmptyBT
+--NodoBt 4 EmptyBT EmptyBT
+-- *Main> addTree 5 (NodoBt 4 EmptyBT EmptyBT)
+-- NodoBt 4 EmptyBT (NodoBt 5 EmptyBT EmptyBT)
+-- *Main> addTree 6 (NodoBt 4 EmptyBT EmptyBT)
+-- NodoBt 4 EmptyBT (NodoBt 6 EmptyBT EmptyBT)
+-- *Main> addTree 7 (NodoBt 4 EmptyBT (NodoBt 6 EmptyBT EmptyBT))
+-- NodoBt 4 EmptyBT (NodoBt 6 EmptyBT (NodoBt 7 EmptyBT EmptyBT))
+-- *Main> addTree 3 (NodoBt 4 EmptyBT (NodoBt 6 EmptyBT (NodoBt 7 EmptyBT EmptyBT)))
+-- NodoBt 4 (NodoBt 3 EmptyBT EmptyBT) (NodoBt 6 EmptyBT (NodoBt 7 EmptyBT EmptyBT))
+-- *Main> addTree 2 (NodoBt 4 (NodoBt 3 EmptyBT EmptyBT) (NodoBt 6 EmptyBT (NodoBt 7 EmptyBT EmptyBT)))         
+-- NodoBt 4 (NodoBt 3 (NodoBt 2 EmptyBT EmptyBT) EmptyBT) (NodoBt 6 EmptyBT (NodoBt 7 EmptyBT EmptyBT))
+-- *Main> inOrderTree (NodoBt 4 (NodoBt 3 (NodoBt 2 EmptyBT EmptyBT) EmptyBT) (NodoBt 6 EmptyBT (NodoBt 7 EmptyBT EmptyBT)))
+-- [2,3,4,6,7]
+
+
+-- Escribir el modulo diccionario con una implementacion de los mismos usando List. 
+
+
+
+
+
+
+FUNCION SET : 
+
+--10 Un conjunto o set es una coleccion de items del mismo tipo distinguibles entre si por su clave o valor, en la cual un item puede ser testeado
+--si es miembro, insertado o borrado de la coleccion. La cantidad de elementos distintos es lo que se denomina el tamaño del conjunto. 
+
+-- module Set(Set, emptySet, setEmpty, inSet, addSet, delSet) where
+    --emptySet :: Set a
+    --setEmpty :: Set a -> Bool
+    -- inSet :: (Eq a) => a -> Set a -> Bool
+    -- addSet :: (Eq a) => a -> Set a -> Set a
+    -- delSet :: (Eq a) => a -> Set a -> Set a
+    --unionSet :: (Eq a) => Set a -> Set a -> Set a
+
+-- Defina el tipo de dato e implemente los metodos del nuevo tipo de dato, utilizando listas no ordenadas y sin duplicados. El metodo unionSet (Union de dos conjuntos)
+--se escribira haciendo uso de los metodos ya definidos, es decir no se operara directamenta la lista sino se operara el Set. 
+
+module Set (Set, emptySet, setEmpty, inSet, addSet, delSet, unionSet) where
+
+-- Definición del tipo de dato Set como una lista de elementos de tipo a
+type Set a = [a]
+
+-- emptySet: Crea un conjunto vacío
+emptySet :: Set a
+emptySet = []
+
+-- setEmpty: Devuelve True si el conjunto está vacío, False si no lo está
+setEmpty :: Set a -> Bool
+setEmpty [] = True
+setEmpty _  = False
+
+-- inSet: Verifica si un elemento está en el conjunto (utiliza la igualdad)
+inSet :: (Eq a) => a -> Set a -> Bool
+inSet x set = x `elem` set
+
+-- addSet: Añade un elemento al conjunto si no está presente
+addSet :: (Eq a) => a -> Set a -> Set a
+addSet x set
+  | x `elem` set = set  -- Si el elemento ya está, no lo añadimos
+  | otherwise = x : set  -- Si no está, lo añadimos al principio de la lista
+
+-- delSet: Elimina un elemento del conjunto si está presente
+delSet :: (Eq a) => a -> Set a -> Set a
+delSet x set = filter (/= x) set  -- Filtra todos los elementos distintos a x
+
+-- unionSet: Realiza la unión de dos conjuntos (sin duplicados)
+unionSet :: (Eq a) => Set a -> Set a -> Set a
+unionSet set1 set2 = foldr addSet set2 set1  -- Añade todos los elementos de set1 a set2
+
+
+-- *Set> inSet 1 s1
+-- True
+-- *Set> inSet 4 s1
+-- False
+-- *Set> inSet 4 s2
+-- True
+-- *Set> inSet 1 s2
+-- False
+-- *Set> s3 = addSet 5 s1
+-- *Set> inSet 1 s3      
+-- True
+-- *Set> inSet 5 s3
+-- True
+-- *Set> s4 = delSet 3 s2
+-- *Set> inSet 4 s2      
+-- True
+-- *Set> inSet 3 s2
+-- True
+-- *Set> inSet 3 s4
+-- False
+-- *Set> s5 = unionSet s1 s2
+-- *Set> show (s5)
+-- "[1,2,3,4]"
+-- *Set> show (s4)
+-- "[4]"
+-- *Set> show (s3)
+-- "[5,1,2]"
+-- *Set>
+
+
+PILA: 
+
+module Pila (Stack,pop,push,top,emptyStk,stackIsEmpty) where 
+    push :: a -> Stack a -> Stack a
+    pop :: Stack a -> Stack a 
+    top :: Stack a -> a 
+    emptyStk :: Stack a 
+    stackIsEmpty :: Stack a -> Bool
+
+    data Stack a = EmptyStk | Stk a (Stack a) deriving Show
+    emptyStk = EmptyStk -- pila vacia = vacia
+    push x s = Stk x s 
+    pop EmptyStk = error "Stack vacio" -- si esta vacia me tira este error. 
+    pop (Stk _ s) = s -- quiero eliminar el x y quedarme con el s. Me devuelve s y que me borre el primer elemento. 
+    top EmptyStk = error "Stack Vacio"
+    top (Stk x _) = x -- aca si me quiero quedar con x xq quiero q me muestre el elemento superior de la pila. Entonces le pido q me de el x, la s no me importa. 
+    stackIsEmpty EmptyStk = True
+    stackIsEmpty _ = False -- con el _ indico que el stack si tiene algo.  
+
+    -- en la terminar usamos : stackIsEmpty EmptyStk, push 1 EmptyStk, push 2 (push 1 EmptyStk), stackIsEmpty (push 1 EmptyStk)
+
+COLA :
+
+-- 9 Una cola de prioridad es una estructura de datos que almacena elementos clasificables. Con la particularidad que, cuando se saca uno de ella siempre se extrae el elemento
+-- con menor clave, de ahi su nombre pues clasifica los elementos en funcion de su prioridad. La prioridad mas baja primero. 
+-- mkqrp: Instancia una nueva cola de prioridad vacia. 
+-- addqpr: Agrega un nuevo elemento a la cola de prioridad. 
+-- nextqpr: Devuelve el elemento con clave mas baja de la cola de prioridad. 
+-- popqpr: devuelve una cola de prioridad donde se ha quitado el nextqpr. 
+-- Defina el TAD ColaPrioridad, e implemente el mismo utilizando un arbol binario de busqueda como estructura de almacenamiento. 
+-- Escribir todas las funciones necesarias para la manipulacion de la estructura subyascente, es decir para manipular el arbol. 
+-- Recordar como extraer el elemento con clave mas pequeña de un arbol. 
+
+module ColaPrioridad (ColaPrioridad, mkQpr, addQpr, nextQpr, popQpr) 
+where
+data BinArbol a = EmptyBt | NodoBT a (BinArbol a) (BinArbol a) deriving Show -- si voy a usar un arbol binario para el almacenamiento tambien tengo que definirlo. 
+data ColaPrioridad a = Cola { arbol2 :: BinArbol a } deriving Show --El operador :: se utiliza para especificar el tipo de un campo. En este caso, Arbol2 :: BinArbol a significa que el campo Arbol2 es de tipo BinArbol a, es decir, es un árbol binario de búsqueda cuyos nodos contienen valores de tipo a.
+
+mkQpr :: ColaPrioridad a 
+mkQpr = Cola EmptyBt          -- misma caracteristica que cuando definis un arbol binario vacio. 
+
+addQpr :: (Ord a) => a -> ColaPrioridad a -> ColaPrioridad a
+addQpr x (Cola t) = Cola (addTree2 x t)
+  where 
+    addTree2 :: (Ord a) => a -> BinArbol a -> BinArbol a
+    addTree2 x EmptyBt = NodoBT x EmptyBt EmptyBt
+    addTree2 x (NodoBT y izq der)
+      | x < y     = NodoBT y (addTree2 x izq) der  -- Coloca en el subárbol izquierdo los valores menores.
+      | otherwise = NodoBT y izq (addTree2 x der)  -- Coloca en el subárbol derecho los valores mayores.
+
+
+nextQpr :: (Ord a) => ColaPrioridad a -> Maybe a
+nextQpr (Cola EmptyBt) = Nothing  -- Si el árbol está vacío, no hay valor mínimo.
+nextQpr (Cola t) = Just (obtenerMinimo t)  -- Llamamos a la función auxiliar para obtener el mínimo.
+  where
+    obtenerMinimo :: (Ord a) => BinArbol a -> a
+    obtenerMinimo (NodoBT v EmptyBt _) = v  -- Si llegamos al nodo más a la izquierda, ese es el valor mínimo.
+    obtenerMinimo (NodoBT _ izq _) = obtenerMinimo izq  -- Si no, seguimos hacia la izquierda.
+
+popQpr (Cola EmptyBt) = Cola EmptyBt
+popQpr (Cola t) = Cola (delTree2 t)
+  where
+    delTree2 :: (Ord a) => BinArbol a -> BinArbol a
+    delTree2 EmptyBt = EmptyBt
+    delTree2 (NodoBT _ EmptyBt der) = der
+    delTree2 (NodoBT x izq der) = NodoBT x (delTree2 izq) der
+
+
+
+module Diccionario (Dict, mkNewDict, insertDict, delDict, inDict) where
+
+-- Definición del tipo Dict
+newtype Dict a = D [a] deriving Show 
+
+-- Función para crear un diccionario vacío
+mkNewDict :: Dict a
+mkNewDict = D []  -- Retorna un diccionario vacío (lista vacía).
+
+-- Función para insertar un elemento en el diccionario
+insertDict :: (Ord a) => a -> Dict a -> Dict a
+insertDict x (D []) = D [x]  -- Si el diccionario está vacío, inserta el elemento.
+insertDict x (D (y:ys))
+    | x == y    = D (y:ys)  -- Si el elemento ya está en el diccionario, no lo insertamos.
+    | x < y     = D (x:y:ys)  -- Si el elemento es menor que el primero, lo insertamos antes.
+    | otherwise = D (y : ys')  -- Si el elemento es mayor, seguimos buscando recursivamente.
+  where
+   D ys' = insertDict x (D ys)  -- Recursión para insertar en el resto del diccionario.
+
+-- Función para eliminar un elemento del diccionario
+delDict :: (Ord a) => a -> Dict a -> Dict a
+delDict x (D []) = D []  -- Si el diccionario está vacío, retornamos el diccionario vacío. 
+                        -- otra forma : delDict x (D []) = error "Diccionario vacío"  -- Si el diccionario está vacío, error. 
+delDict x (D (y:ys))
+    | x == y    = D ys  -- Si encontramos el elemento, lo eliminamos.
+    | otherwise = D (y : ys')  -- Si no es el primero, seguimos buscando.
+  where
+   D ys' = delDict x (D ys)  -- Recursión para eliminar el elemento.
+
+-- Función para saber si un elemento está en el diccionario
+inDict :: (Ord a) => a -> Dict a -> Bool
+inDict x (D []) = False  -- Si el diccionario está vacío, el elemento no está presente.
+inDict x (D (y:ys))
+    | x == y    = True  -- Si encontramos el elemento, retornamos True.
+    | otherwise = inDict x (D ys)  -- Si no, seguimos buscando.
+
+
+
