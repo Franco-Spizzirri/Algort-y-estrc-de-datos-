@@ -8,39 +8,43 @@
 -- Escribir todas las funciones necesarias para la manipulacion de la estructura subyascente, es decir para manipular el arbol. 
 -- Recordar como extraer el elemento con clave mas pequeña de un arbol. 
 
-module ColaPrioridad (ColaPrioridad, mkQpr, addQpr, nextQpr, popQpr) 
-where
-data BinArbol a = EmptyBt | NodoBT a (BinArbol a) (BinArbol a) deriving Show -- si voy a usar un arbol binario para el almacenamiento tambien tengo que definirlo. 
-data ColaPrioridad a = Cola { arbol2 :: BinArbol a } deriving Show --El operador :: se utiliza para especificar el tipo de un campo. En este caso, Arbol2 :: BinArbol a significa que el campo Arbol2 es de tipo BinArbol a, es decir, es un árbol binario de búsqueda cuyos nodos contienen valores de tipo a.
+data Arbol a = Vacio | Nodo a (Arbol a) (Arbol a) deriving Show
 
-mkQpr :: ColaPrioridad a 
-mkQpr = Cola EmptyBt          -- misma caracteristica que cuando definis un arbol binario vacio. 
+nuevoArbol:: (Ord a) => Arbol a 
+minimo:: (Ord a) => Arbol a -> a 
+agregar:: (Ord a) => a -> Arbol a -> Arbol a 
+eliminar:: (Ord a) => Arbol a -> Arbol a 
 
-addQpr :: (Ord a) => a -> ColaPrioridad a -> ColaPrioridad a
-addQpr x (Cola t) = Cola (addTree2 x t)
-  where 
-    addTree2 :: (Ord a) => a -> BinArbol a -> BinArbol a
-    addTree2 x EmptyBt = NodoBT x EmptyBt EmptyBt
-    addTree2 x (NodoBT y izq der)
-      | x < y     = NodoBT y (addTree2 x izq) der  -- Coloca en el subárbol izquierdo los valores menores.
-      | otherwise = NodoBT y izq (addTree2 x der)  -- Coloca en el subárbol derecho los valores mayores.
+nuevoArbol = Vacio 
 
+agregar x Vacio = Nodo x Vacio Vacio 
+agregar x (Nodo y izq der) 
+ | x == y = Nodo y izq der 
+ | x < y = Nodo y (agregar x izq) der 
+ | x > y = Nodo y izq (agregar x der) 
+ 
+minimo (Nodo y Vacio der) = y 
+minimo (Nodo y izq Vacio) = minimo izq 
+minimo (Nodo y izq der) = minimo izq 
 
-nextQpr :: (Ord a) => ColaPrioridad a -> Maybe a
-nextQpr (Cola EmptyBt) = Nothing  -- Si el árbol está vacío, no hay valor mínimo.
-nextQpr (Cola t) = Just (obtenerMinimo t)  -- Llamamos a la función auxiliar para obtener el mínimo.
-  where
-    obtenerMinimo :: (Ord a) => BinArbol a -> a
-    obtenerMinimo (NodoBT v EmptyBt _) = v  -- Si llegamos al nodo más a la izquierda, ese es el valor mínimo.
-    obtenerMinimo (NodoBT _ izq _) = obtenerMinimo izq  -- Si no, seguimos hacia la izquierda.
+eliminar Vacio = Vacio 
+eliminar (Nodo y Vacio der) = der 
+eliminar (Nodo y izq der) = Nodo y (eliminar izq) der 
 
-popQpr (Cola EmptyBt) = Cola EmptyBt
-popQpr (Cola t) = Cola (delTree2 t)
-  where
-    delTree2 :: (Ord a) => BinArbol a -> BinArbol a
-    delTree2 EmptyBt = EmptyBt
-    delTree2 (NodoBT _ EmptyBt der) = der
-    delTree2 (NodoBT x izq der) = NodoBT x (delTree2 izq) der
+newtype ColaPrioridad a = Cp (Arbol a) deriving Show
+
+mkQpr:: (Ord a) => ColaPrioridad a 
+addQpr:: (Ord a) => a -> ColaPrioridad a -> ColaPrioridad a
+nextQpr:: (Ord a) => ColaPrioridad a -> a 
+popQpr:: (Ord a) => ColaPrioridad a -> ColaPrioridad a 
+
+mkQpr = Cp (nuevoArbol) 
+
+addQpr x (Cp s) = Cp (agregar x s) 
+
+nextQpr (Cp s) = minimo s 
+
+popQpr (Cp s) = Cp (eliminar s)
 
 
 
