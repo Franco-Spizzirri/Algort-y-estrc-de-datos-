@@ -37,7 +37,7 @@ inDict x (D (y:ys))
 
 -- ya definido previamente el arbol binario (ojo ahi, si no hay q hacerlo primero )
 
-newtype Dict a = Dic a (ArbolBin) deriving Show 
+newtype Dict a = Dic (ArbolBin a) deriving Show 
 
 mkNewDict :: (Ord a) => Dict a 
 mkNewDict = Dic (mkNewTree)
