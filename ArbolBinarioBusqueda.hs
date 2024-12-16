@@ -1,4 +1,4 @@
-data ArbolBin a = VacioBin | NodoBin a (Arbol a) (ArbolBin a) deriving Show 
+data ArbolBin a = VacioBin | NodoBin a (ArbolBin a) (ArbolBin a) deriving Show 
 
 mkNewTree :: (Ord a) => ArbolBin a 
 inTree :: (Ord a) => a -> ArbolBin a -> Bool 
