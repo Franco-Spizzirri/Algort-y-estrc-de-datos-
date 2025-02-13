@@ -25,10 +25,12 @@ module Pila (Stack,pop,push,top,emptyStk,stackIsEmpty) where
     push x (Stk xs) = Stk (x:xs) -- push pone el elemento x en el tope de la lista, o sea que siempre el q entre va a quedar primero de la lista. 
     
     pop (Stk []) = Stk []
-    pop (Stk (_:xs)) = xs 
+    pop (Stk (_:xs)) = Stk xs 
 
     top (Stk[]) = Stk []
     top (Stk(x:_)) = x 
 
     stackIsEmpty (Stk[]) = True 
     stackIsEmpty (Stk _) = False 
+
+-- ambas definiciones funcionan, solo q te va a dar error xq esta definido Stack a y Stk 2 veces.  

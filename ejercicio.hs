@@ -172,7 +172,7 @@ f2 x y = x
 -- ed.)
 -- ¿Cual es el tipo de la funcion definida?
 
--- Si el año es divisible entre 4 y no es divisible entre 100 o es divisible entre 400, entonces el año es bisiesto.
+-- Si el año es divisible entre 4 o es divisible entre 400 y no es divisible entre 100 , entonces el año es bisiesto.
 
 esBisiesto :: Int -> Bool
 esBisiesto año = 
@@ -272,7 +272,7 @@ letras (x:xs)
 
 masDe :: [[a]] -> Int -> [[a]]
 masDe [] _ = []
-masDe (x:xs) n = if longitud1 x > n 
+masDe (x:xs) n = if longitud1 x > n -- en caso de no tener creada la funcion longitud1, hay q hacerla. 
                   then x : masDe xs n
                   else masDe  xs n 
 
@@ -312,8 +312,8 @@ scalarproduct a b = sum [x * y | (x, y) <- zip a b]
 
 divisors :: Int -> [Int]
 divisors x = if x > 0
-               then [y | y <- [1..x], x `mod` y == 0]
-            else []
+             then [y | y <- [1..x], x `mod` y == 0]
+             else []
 
  -- otra manera
 -- divisors x
@@ -354,6 +354,8 @@ cuadrupla aMax bMax cMax dMax =
 -- funci´on move que dado un punto en el plano (representado como un par de enteros) y una direcci´on
 -- devuelva el punto que se obtiene el desplazarse una unidad en dicha direcci´on.
 
+-- data lo usamos para "definir" un tipo de dato. 
+--tipos enumerados: 
 data Direccion = Norte | Sur | Este | Oeste deriving Show
 
 move :: (Int, Int) -> Direccion -> (Int,Int)
@@ -362,7 +364,24 @@ move (x,y) Sur = (x,y -1)  -- hacia abajo 1 en la 1
 move (x,y) Este = (x +1,y) -- hacia la derecha 1 en x
 move (x,y) Oeste = (x -1,y) -- hacia la izquierda 1 en x 
 
-data Persona = Pers String Int deriving Show
+--Pattern matching: 
+data Estacion = Primavera | Verano | Otoño | Invierno
+data Temperatura = Frio | Templado | Caliente
+tiempo :: Estacion -> Temperatura
+tiempo Primavera = Caliente
+tiempo Verano = Caliente
+tiempo Otoño = Templado
+tiempo Invierno = Frio
+
+data Persona = Pers String Int Int deriving Show
+juan :: Persona 
+juan = Pers "Juan Lopez" 39235478 23 
+verPersona :: Persona -> String
+verPersona (Pers nombre docu edad) = "Persona, Nombre:" ++ show nombre ++ ", Edad:" ++ show edad ++ ",DNI:" ++ show docu
+
+data Personas = Person { nombre :: String, edad :: Int} deriving Show
+p1 :: Personas 
+p1 = Person {nombre = "Fernando", edad = 22}
 
 -- 10.
 -- a) Definir las operaciones de suma y producto m´odulo 2 para el tipo
@@ -490,3 +509,9 @@ genToBin (NodeG x (h:hs)) = NodeB (genToBin h) x (transformaHermanos hs x) -- tr
     transformaHermanos :: [GenTree a] -> a -> BinTree a
     transformaHermanos [] _ = EmptyB  -- No hay más hermanos
     transformaHermanos (h:hs) x = NodeB (genToBin h) x (transformaHermanos hs x) -- transformar hermanos a su vez transforma el resto de la lista (hermanos derechos) en binario
+
+
+type Nombre = String
+type Edad = Integer 
+type Personass = (Nombre, Edad) 
+-- el type lo usamos para definir "sinonimos" de tipos. Nombre es sinonino de string, etc. 

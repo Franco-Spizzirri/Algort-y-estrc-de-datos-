@@ -1,3 +1,30 @@
+-- Cola normal: 
+
+module Cola (Queue, emptyQueue, inQueue, delQueue, isQueueEmpty, front) where 
+
+emptyQueue :: Queue a 
+inQueue :: a -> Queue a -> Queue a 
+delQueue :: Queue a -> Queue a 
+isQueueEmpty:: Queue a -> Bool -- pregunto si la cola en general esta vacia
+front :: Queue a -> a 
+
+-- ahora lo implementamos usando listas []
+newtype Queue a = C [a] deriving Show 
+
+emptyQueue = C []
+
+inQueue x (C s) = C (s ++ [x])
+
+delQueue (C []) = error "Cola vacia"
+delQueue (C (x:xs)) = C xs 
+
+front (C []) = error "Cola vacia"
+front (C (x:xs)) = x 
+
+isQueueEmpty (C []) = True
+isQueueEmpty _ = False 
+
+
 -- 9 Una cola de prioridad es una estructura de datos que almacena elementos clasificables. Con la particularidad que, cuando se saca uno de ella siempre se extrae el elemento
 -- con menor clave, de ahi su nombre pues clasifica los elementos en funcion de su prioridad. La prioridad mas baja primero. 
 -- mkqrp: Instancia una nueva cola de prioridad vacia. 
@@ -46,33 +73,5 @@ addQpr x (Cp s) = Cp (agregar x s)
 nextQpr (Cp s) = minimo s 
 
 popQpr (Cp s) = Cp (eliminar s)
-
-
--- Cola normal: 
-
-module Cola (Cola, EmptyCola, insertCola, delCola, IsColaEmpty, front)
-
-EmptyCola :: Cola a 
-insertCola :: a -> Cola a -> Cola a 
-delCola :: Cola a -> Cola a 
-IsColaEmpty :: Cola a -> Bool -- pregunto si la cola en general esta vacia
-front :: Cola a -> a 
-
--- ahora lo implementamos usando listas []
-newtype Cola a = C [a]
-
-EmptyCola = C []
-
-insertCola x (C s) = C (s ++ [x])
-
-delCola (C[]) = C[]
-delCola (C(x:xs)) = C xs 
-
-front (C[]) = C[]
-front (C(x:xs)) = x 
-
-
-
-
 
 

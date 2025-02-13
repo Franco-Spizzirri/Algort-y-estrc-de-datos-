@@ -50,3 +50,7 @@ inDict x (Dic t) = inTree x t
 
 delDict :: (Ord a) => a -> Dict a -> Dict a 
 delDict x (Dic t) = Dic (delTree x t)
+
+
+
+
