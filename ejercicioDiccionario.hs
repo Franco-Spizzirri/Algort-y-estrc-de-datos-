@@ -31,7 +31,31 @@ inDict x (D (y:ys))
     | x == y    = True  -- Si encontramos el elemento, retornamos True.
     | otherwise = inDict x (D ys)  -- Si no, seguimos buscando.
 
-
+-- ejemplo: 
+-- *Diccionario> insertDict 2 (D[])
+-- D [2]
+-- *Diccionario> insertDict 2 (D[2])
+-- D [2]
+-- *Diccionario> insertDict 1 (D[2])
+-- D [1,2]
+-- *Diccionario> insertDict 3 (D[1,2])
+-- D [1,2,3]
+-- *Diccionario> insertDict 3 (D[1,2])     
+-- D [1,2,3]
+-- *Diccionario> delDict 4 (D[1,2,3])
+-- D [1,2,3]
+-- *Diccionario> delDict 4 (D[])     
+-- D []
+-- *Diccionario> delDict 1 (D[1,2,3])
+-- D [2,3]
+-- *Diccionario> delDict 2 (D[1,2,3])
+-- D [1,3]
+-- *Diccionario> inDict 5 (D[1,2,3])
+-- False
+-- *Diccionario> inDict 2 (D[1,2,3])
+-- True
+-- *Diccionario> inDict 1 (D[1,2,3])
+-- True
 
 -- Diccionario usando Arbol binario: 
 

@@ -24,6 +24,37 @@ front (C (x:xs)) = x
 isQueueEmpty (C []) = True
 isQueueEmpty _ = False 
 
+-- ejemplo de uso: 
+-- *Cola> s1 = C [2,3,4]
+-- *Cola> delQueue s1
+-- C [3,4]
+-- *Cola> front s1
+-- 2
+-- *Cola> isQueueEmpty s1
+-- False
+-- *Cola> inQueue 5 s1
+-- C [2,3,4,5]
+
+
+--Cola comun 
+data Queue a = EmptyQ | Q a (Queue a) deriving Show
+
+emptyQueue = EmptyQ
+
+enQueue x EmptyQ = Q x EmptyQ -- agregar elemento a una cola vacia
+enQueue x (Q y ys) = Q y (enQueue x ys) -- agregar un elemento a una cola que tiene mas de un elemento.
+
+
+deQueue EmptyQ = error "Cola vacia"
+deQueue (Q _ s) = s
+
+front EmptyQ = error "Cola Vacia"
+front (Q x _) = x
+
+queueIsEmpty EmptyQ = True
+queueIsEmpty _ = False
+
+-- esto comentalo por que si no, no funciona. 
 
 -- 9 Una cola de prioridad es una estructura de datos que almacena elementos clasificables. Con la particularidad que, cuando se saca uno de ella siempre se extrae el elemento
 -- con menor clave, de ahi su nombre pues clasifica los elementos en funcion de su prioridad. La prioridad mas baja primero. 

@@ -39,3 +39,22 @@ delTree x (NodoBin y lf rt)
     | x == y = let (k, wt) = minTree (rt)
                 in (NodoBin k lf wt)
 
+-- ejemplo:
+-- *Main> mkNewTree
+-- VacioBin
+-- *Main> addTree 2 VacioBin
+-- NodoBin 2 VacioBin VacioBin
+-- *Main> addTree 10 VacioBin
+-- NodoBin 10 VacioBin VacioBin
+-- *Main> addTree 2 (NodoBin 10 VacioBin VacioBin)
+-- NodoBin 10 (NodoBin 2 VacioBin VacioBin) VacioBin
+-- *Main> addTree 12 (NodoBin 10 (NodoBin 2 VacioBin VacioBin) VacioBin)
+-- NodoBin 10 (NodoBin 2 VacioBin VacioBin) (NodoBin 12 VacioBin VacioBin)
+-- *Main> inTree 12 (NodoBin 10 (NodoBin 2 VacioBin VacioBin) (NodoBin 12 VacioBin VacioBin))
+-- True
+-- *Main> inTree 4 (NodoBin 10 (NodoBin 2 VacioBin VacioBin) (NodoBin 12 VacioBin VacioBin)) 
+-- False
+-- *Main> delTree 12 (NodoBin 10 (NodoBin 2 VacioBin VacioBin) (NodoBin 12 VacioBin VacioBin))
+-- NodoBin 10 (NodoBin 2 VacioBin VacioBin) VacioBin
+-- *Main>
+
