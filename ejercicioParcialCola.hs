@@ -106,3 +106,34 @@ nextQpr (Cp s) = minimo s
 popQpr (Cp s) = Cp (eliminar s)
 
 
+--Es igual que una cola, nada mas que las funciones son de la clase Ord y en la funcion de agregar elemento se agrega una funcion para insertar en orden
+module ColaPrioridad (PriorityQueue, mkqpr, addqpr, nextqpr, popqpr) where
+
+mkqpr :: PriorityQueue a
+addqpr :: (Ord a) => a -> PriorityQueue a -> PriorityQueue a
+nextqpr :: PriorityQueue a -> a
+popqpr :: PriorityQueue a -> PriorityQueue a
+
+
+-- Definimos el tipo de dato abstracto PriorityQueue
+newtype PriorityQueue a = PQ [a] deriving Show
+
+-- Función que crea una cola de prioridad vacía
+mkqpr = PQ []
+
+-- Función que agrega un elemento a la cola de prioridad
+addqpr x (PQ s) = PQ (insertInOrder x s)
+  where
+    insertInOrder :: (Ord a) => a -> [a] -> [a] -- toma un elemento, una lista y devuelve una lista
+    insertInOrder x [] = [x]
+    insertInOrder x (y:ys) = if x <= y 
+                             then (x:y:ys)
+                             else y: insertInOrder x ys
+
+-- Función que devuelve el elemento más pequeño de la cola de prioridad
+nextqpr (PQ []) = error "ColaPrioridadVacia"
+nextqpr (PQ (x:_)) = x
+
+-- Función que elimina el elemento más pequeño de la cola de prioridad
+popqpr (PQ []) = error "ColaPrioridadVacia"
+popqpr (PQ (_:xs)) = PQ xs
